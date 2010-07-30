@@ -110,7 +110,10 @@ public class JShellLink {
         if (!foundIt) {
             try {
             ClassLoader cl = JShellLink.class.getClassLoader();
-            InputStream in = cl.getResourceAsStream("jshortcut.dll");
+
+            String libname = "jshortcut_" + System.getProperty("os.arch") + ".dll";
+
+            InputStream in = cl.getResourceAsStream(libname);
             if (in == null)
                 throw new Exception("libname: jshortcut.dll not found");
             File tmplib = File.createTempFile("jshortcut-",".dll");
