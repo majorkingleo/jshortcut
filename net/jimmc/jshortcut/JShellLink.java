@@ -60,12 +60,14 @@ public class JShellLink {
 	// The CLASSPATH searching code below was written by Jim McBeath
 	// and contributed to the jRegistryKey project,
 	// after which it was modified and used here.
+        String libname = "jshortcut_" + System.getProperty("os.arch") + ".dll";
+
 	try {
 	    String appDir = System.getProperty("JSHORTCUT_HOME");
 	    	// allow application to specify our JNI location
 	    if (appDir!=null) {
 	        // application told us to look in $JSHORTCUT_HOME for our dll
-		File f = new File(appDir,"jshortcut.dll");
+		File f = new File(appDir,libname);
 		String path = f.getAbsolutePath();
 		System.load(path);	// load JNI code
 	    } else {
@@ -97,7 +99,7 @@ public class JShellLink {
 		    else
 			dir = ".";
 		}
-		File f = new File(dir,"jshortcut.dll");
+		File f = new File(dir,libname);
 		if (f.exists()) {
 		    String path = f.getAbsolutePath();
 		    System.load(path);	// load JNI code
@@ -109,13 +111,11 @@ public class JShellLink {
 
         if (!foundIt) {
             try {
-            ClassLoader cl = JShellLink.class.getClassLoader();
-
-            String libname = "jshortcut_" + System.getProperty("os.arch") + ".dll";
+            ClassLoader cl = JShellLink.class.getClassLoader();            
 
             InputStream in = cl.getResourceAsStream(libname);
             if (in == null)
-                throw new Exception("libname: jshortcut.dll not found");
+                throw new Exception("libname: " + libname + " not found");
             File tmplib = File.createTempFile("jshortcut-",".dll");
             tmplib.deleteOnExit();
             OutputStream out = new FileOutputStream(tmplib);
@@ -129,7 +129,7 @@ public class JShellLink {
 
             foundIt = Boolean.TRUE;
 
-            System.out.println("jshortcut.dll loaded via tmp generated pathname: " + tmplib.getAbsolutePath());
+            System.out.println( libname + " loaded via tmp generated pathname: " + tmplib.getAbsolutePath());
             
             } catch (Exception e) {
               foundIt = Boolean.FALSE;
