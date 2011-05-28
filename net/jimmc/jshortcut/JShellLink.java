@@ -63,9 +63,10 @@ public class JShellLink {
         String libname = "jshortcut_" + System.getProperty("os.arch") + ".dll";
 
 	try {
-	    String appDir = System.getProperty("JSHORTCUT_HOME");
+	    String appDir = System.getProperty("JSHORTCUT_HOME");                        
 	    	// allow application to specify our JNI location
-	    if (appDir!=null) {
+	    if (appDir!=null) {                
+                System.out.println("JSHORTCUT_HOME ist set to " + appDir );
 	        // application told us to look in $JSHORTCUT_HOME for our dll
 		File f = new File(appDir,libname);
 		String path = f.getAbsolutePath();
